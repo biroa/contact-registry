@@ -10,9 +10,7 @@ use Symfony\Component\Console\Command\Command as CommandAlias;
 
 class generateExampleData extends Command
 {
-
     const MAX_ADDRESS_NUM = 2;
-
 
     /**
      * The name and signature of the console command.
@@ -34,21 +32,36 @@ class generateExampleData extends Command
     public function handle(): int
     {
         $createdContacts = 0;
-        $contactsNum = (int)$this->argument('contactsNum');
+        $contactsNum = (int) $this->argument('contactsNum');
+        $createdContacts = $this->insertContacts((int)$createdContacts, (int)$contactsNum);
+        if ($createdContacts != $contactsNum) {
+            $this->error('Not all contacts were successfully generated!');
+            return CommandAlias::FAILURE;
+        }else{
+            $this->info('Contacts are successfully generated!');
+            return CommandAlias::SUCCESS;
+        }
+    }
+
+    /**
+     * @param int $createdContacts
+     * @param int $contactsNum
+     * @return int
+     */
+    private function insertContacts(int $createdContacts, int $contactsNum): int
+    {
         for ($i = 0; $i < $contactsNum; $i++) {
-        $contacts = Contact::factory()
-            ->has(Address::factory()->count(self::MAX_ADDRESS_NUM))
-            ->has(Detail::factory()->count((int)$this->argument('detailsNum')))
-            ->create();
-            if(!$contacts->exists){
+            $contact = Contact::factory()
+                ->has(Address::factory()->count(self::MAX_ADDRESS_NUM))
+                ->has(Detail::factory()->count((int) $this->argument('detailsNum')))
+                ->create();
+
+            if (! $contact->exists) {
                 $this->error('There was an issue with the current contact insertion!');
                 return CommandAlias::FAILURE;
             }
             $createdContacts++;
         }
-        if($createdContacts === $contactsNum){
-            $this->info('Contacts are successfully generated!');
-            return CommandAlias::SUCCESS;
-        }
+        return $createdContacts;
     }
 }

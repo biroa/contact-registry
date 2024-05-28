@@ -2,10 +2,9 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use App\Models\Contact;
 use App\Models\Detail;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class DetailFactory extends Factory
 {
@@ -15,7 +14,6 @@ class DetailFactory extends Factory
      * @var string
      */
     protected $model = Detail::class;
-
 
     /**
      * Define the model's default state.

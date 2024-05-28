@@ -1,6 +1,5 @@
 <?php
 
-
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DetailController;
@@ -11,9 +10,6 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-
 Route::resource('contacts', ContactController::class);
 Route::resource('details', DetailController::class);
 Route::resource('addresses', AddressController::class);
-
-

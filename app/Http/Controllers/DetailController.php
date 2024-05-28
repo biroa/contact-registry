@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\DetailResource;
+use App\Models\Detail;
 use Illuminate\Http\Request;
 
 class DetailController extends Controller
@@ -9,7 +11,7 @@ class DetailController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): DetailResource
     {
         return new DetailResource(Detail::all());
     }
@@ -35,7 +37,7 @@ class DetailController extends Controller
      */
     public function show(string $id)
     {
-        return new AddressResource(Address::findOrFail($id));
+        return new DetailResource(Detail::findOrFail($id));
     }
 
     /**

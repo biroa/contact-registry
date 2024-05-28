@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('details', function (Blueprint $table) {
             $table->id();
             $table->string('key', 100);
-            $table->string('value',255);
+            $table->string('value', 255);
             $table->softDeletes();
             $table->foreignId('contact_id');
             $table->timestamps();
