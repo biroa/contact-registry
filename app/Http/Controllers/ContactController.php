@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\ContactResource;
 use App\Models\Contact;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ContactController extends Controller
 {
@@ -17,19 +18,23 @@ class ContactController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Contact $contact, Request $request)
     {
-        //
+        $validator = Validator::make($request->all(),
+            [
+                'firstName' => 'required|max:85',
+                'lastName' => 'required|max:85',
+            ]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 400);
+        }
+
+        $validated = $validator->validate();
+        $contact->create($validator->safe()->only(['firstName', 'lastName']));
+
+        return new ContactResource($validated);
     }
 
     /**
@@ -37,15 +42,7 @@ class ContactController extends Controller
      */
     public function show(string $id)
     {
-        return new ContactResource(Contact::findOrFail($id));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        return new ContactResource(Contact::findOrFail((int) $id));
     }
 
     /**
@@ -53,14 +50,29 @@ class ContactController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+
+        $contact = Contact::findOrFail((int) $id);
+        $validator = Validator::make($request->all(),
+            [
+                'firstName' => 'required|max:85',
+                'lastName' => 'required|max:85',
+            ]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 400);
+        }
+        $validated = $validator->validate();
+        $contact->fill($validator->safe()->only(['firstName', 'lastName']))->save();
+
+        return new ContactResource($validated);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * SoftDeleting a contact
+     *
+     * @return void
      */
-    public function destroy(string $id)
+    public function destroy(Contact $contact)
     {
-        //
+        $contact->delete();
     }
 }

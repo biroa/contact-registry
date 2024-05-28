@@ -8,7 +8,7 @@ use App\Models\Detail;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Command\Command as CommandAlias;
 
-class generateExampleData extends Command
+class GenerateExampleData extends Command
 {
     const MAX_ADDRESS_NUM = 2;
 
@@ -26,28 +26,22 @@ class generateExampleData extends Command
      */
     protected $description = "Let's generate example data for x with 2 addresses and y details";
 
-    /**
-     * @return int
-     */
     public function handle(): int
     {
         $createdContacts = 0;
         $contactsNum = (int) $this->argument('contactsNum');
-        $createdContacts = $this->insertContacts((int)$createdContacts, (int)$contactsNum);
+        $createdContacts = $this->insertContacts((int) $createdContacts, (int) $contactsNum);
         if ($createdContacts != $contactsNum) {
             $this->error('Not all contacts were successfully generated!');
+
             return CommandAlias::FAILURE;
-        }else{
+        } else {
             $this->info('Contacts are successfully generated!');
+
             return CommandAlias::SUCCESS;
         }
     }
 
-    /**
-     * @param int $createdContacts
-     * @param int $contactsNum
-     * @return int
-     */
     private function insertContacts(int $createdContacts, int $contactsNum): int
     {
         for ($i = 0; $i < $contactsNum; $i++) {
@@ -58,10 +52,12 @@ class generateExampleData extends Command
 
             if (! $contact->exists) {
                 $this->error('There was an issue with the current contact insertion!');
+
                 return CommandAlias::FAILURE;
             }
             $createdContacts++;
         }
+
         return $createdContacts;
     }
 }
