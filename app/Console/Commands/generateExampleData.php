@@ -41,7 +41,7 @@ class generateExampleData extends Command
             ->has(Detail::factory()->count((int)$this->argument('detailsNum')))
             ->create();
             if(!$contacts->exists){
-                $this->error('There was an issue so there are no contact yet!');
+                $this->error('There was an issue with the current contact insertion!');
                 return CommandAlias::FAILURE;
             }
             $createdContacts++;
