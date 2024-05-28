@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\ContactResource;
+use App\Http\Resources\ContactRemoveResource;
+use App\Http\Resources\ContactsIndexResource;
+use App\Http\Resources\ContactStoreResource;
+use App\Http\Resources\ContactShowResource;
+use App\Http\Resources\ContactUpdateResource;
 use App\Models\Contact;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -13,15 +17,15 @@ class ContactController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): ContactResource
+    public function index(): ContactsIndexResource|JsonResponse
     {
-        return new ContactResource(Contact::all());
+        return new ContactsIndexResource(Contact::all());
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Contact $contact, Request $request): ContactResource|JsonResponse
+    public function store(Request $request): ContactStoreResource|JsonResponse
     {
         $validator = Validator::make($request->all(),
             [
@@ -32,24 +36,25 @@ class ContactController extends Controller
             return response()->json(['errors' => $validator->errors()], 400);
         }
 
-        $validated = $validator->validate();
-        $contact->create($validator->safe()->only(['firstName', 'lastName']));
+        $validator->validate();
+        $contact = new Contact($validator->safe()->only(['firstName', 'lastName']));
+        $contact->save();
+        return new ContactStoreResource($contact);
 
-        return new ContactResource($validated);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id): ContactResource
+    public function show(string $id): ContactShowResource|JsonResponse
     {
-        return new ContactResource(Contact::findOrFail((int) $id));
+        return new ContactShowResource(Contact::findOrFail((int) $id));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id): ContactResource|JsonResponse
+    public function update(Request $request, string $id): ContactUpdateResource|JsonResponse
     {
 
         $contact = Contact::findOrFail((int) $id);
@@ -61,17 +66,19 @@ class ContactController extends Controller
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 400);
         }
-        $validated = $validator->validate();
+        $validator->validate();
         $contact->fill($validator->safe()->only(['firstName', 'lastName']))->save();
 
-        return new ContactResource($validated);
+        return new ContactUpdateResource($contact);
     }
 
     /**
      * SoftDeleting a contact
      */
-    public function destroy(Contact $contact): void
+    public function destroy(Contact $contact)
     {
-        $contact->delete();
+        $softDeleted = $contact;
+        Contact::destroy($contact->id);
+        return new ContactRemoveResource($softDeleted);
     }
 }

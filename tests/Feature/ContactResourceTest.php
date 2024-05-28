@@ -26,14 +26,20 @@ class ContactResourceTest extends TestCase
      */
     public function test_contacts_store_resource(): void
     {
-        $this->postJson('/api/contacts', ['firstName' => 'Adam', 'lastName' => 'Biro']);
-        $response = $this->get(route('contacts.store'));
-        $response->assertStatus(200)
-            ->assertJsonPath('data.0.firstName', 'Adam')
-            ->assertJsonPath('data.0.lastName', 'Biro')
-            ->assertJson(fn (AssertableJson $json) => $json->hasAll(['data.0.firstName', 'data.0.lastName', 'data'])
-                ->missing('message')
-            );
+        $response = $this->postJson('/api/contacts', ['firstName' => 'Adam', 'lastName' => 'Biro']);
+//        dd($response->content());
+        $response->assertStatus(201)
+            ->assertJsonPath('meta.message', 'Contacts stored successfully')
+            ->assertJsonPath('data.firstName', 'Adam')
+            ->assertJsonPath('data.lastName', 'Biro')
+            ->assertJson(fn (AssertableJson $json) => $json->hasAll(
+                [
+                    'data.firstName',
+                    'data.lastName',
+                    'data',
+                    'meta',
+                    'meta.message'
+                ]));
     }
 
     /**
@@ -56,7 +62,7 @@ class ContactResourceTest extends TestCase
         $response->assertStatus(200);
 
         // Assert that the user was updated with the new data
-        $this->assertDatabaseHas(Contact::class, [
+        $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
             'firstName' => $newData['firstName'],
             'lastName' => $newData['lastName'],
