@@ -1,7 +1,9 @@
 <?php
 
-use App\Http\Resources\ContactResource;
-use App\Models\Contact;
+
+use App\Http\Controllers\AddressController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\DetailController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -10,10 +12,8 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 
-Route::get('/contacts', function () {
-    return new ContactResource(Contact::all());
-});
+Route::resource('contacts', ContactController::class);
+Route::resource('details', DetailController::class);
+Route::resource('addresses', AddressController::class);
 
-Route::get('/contact/{id}', function (string $id) {
-    return new ContactResource(Contact::findOrFail($id));
-});
+
