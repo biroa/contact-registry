@@ -16,9 +16,9 @@ class DetailFactory extends Factory
      */
     protected $model = Detail::class;
 
+
     /**
      * Define the model's default state.
-     * @note:: This could be a vertical table in case there were too many columns in the future.
      */
     public function definition(): array
     {
