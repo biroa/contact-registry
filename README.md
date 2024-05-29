@@ -26,8 +26,9 @@ There is a copy of the exported database structure in the readme-file folder in 
 
 #### Steps of configuring the application
 
-- Copy or download the repository
+- Git clone the repository or download the zip
 - Rename or copy the .env.example as .env ( this will be your local environment config file )
+  - <p align="left"><img src="readme-files/db-notes.png" width="379" alt="notes"></p> 
   - Change the DB_CONNECTION to: mysql (I used mysql)
     - DB_CONNECTION=mysql
   - Set the following params based on your environment:
@@ -44,7 +45,7 @@ There is a copy of the exported database structure in the readme-file folder in 
 - `php artisan migrate`
   - _It creates the database if it does not exist yet_
   - _It will run the migration files_
-  - <p align="left"><img src="readme-files/migrations.png" width="800" alt="routes"></p>
+  - <p align="left"><img src="readme-files/migrations.png" width="800" alt="migrations"></p>
 - `php artisan app:generate-example-data 5 4`
   - _This custom command generates {x} contacts, each with two addresses, and {y} pieces of detail._
   - `php artisan key:generate`
@@ -67,4 +68,4 @@ There is a copy of the exported database structure in the readme-file folder in 
 
 - `php artisan test`
   - _it runs all the test and provide an output like this_ 
-<p align="left"><img src="readme-files/tests.png" width="400" alt="routes"></p>
+<p align="left"><img src="readme-files/tests.png" width="400" alt="tests"></p>
