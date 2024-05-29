@@ -14,10 +14,10 @@ class AddressResourceTest extends TestCase
     /**
      * Test address index response
      */
-    public function test_contacts_index_page(): void
+    public function test_address_index_page(): void
     {
         $address = Address::factory(5)->create();
-        $response = $this->get('/api/contacts/');
+        $response = $this->get('/api/addresses/');
         $response->assertStatus(200)
             ->assertJsonCount($address->count(), 'data');
     }
