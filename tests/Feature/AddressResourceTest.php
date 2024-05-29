@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Models\Address;
-use App\Models\Contact;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
@@ -11,6 +10,17 @@ use Tests\TestCase;
 class AddressResourceTest extends TestCase
 {
     use RefreshDatabase;
+
+    /**
+     * Test address index response
+     */
+    public function test_contacts_index_page(): void
+    {
+        $address = Address::factory(5)->create();
+        $response = $this->get('/api/contacts/');
+        $response->assertStatus(200)
+            ->assertJsonCount($address->count(), 'data');
+    }
 
     /**
      * Test address show response

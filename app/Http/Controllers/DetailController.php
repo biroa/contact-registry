@@ -12,7 +12,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-
 class DetailController extends Controller
 {
     /**
@@ -26,7 +25,7 @@ class DetailController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): DetailStoreResource |JsonResponse
+    public function store(Request $request): DetailStoreResource|JsonResponse
     {
         $validator = Validator::make($request->all(),
             [
@@ -64,7 +63,7 @@ class DetailController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id): DetailUpdateResource | JsonResponse
+    public function update(Request $request, string $id): DetailUpdateResource|JsonResponse
     {
         $contact = Detail::findOrFail((int) $id);
         $validator = Validator::make($request->all(),

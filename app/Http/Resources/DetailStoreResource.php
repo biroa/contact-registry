@@ -5,7 +5,6 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-
 /**
  * @property mixed $id
  * @property mixed $key
@@ -21,10 +20,10 @@ class DetailStoreResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            "id" => $this->id,
-            "key" => $this->key,
-            "value" => $this->value,
-            "contact_id" => $this->contact_id,
+            'id' => $this->id,
+            'key' => $this->key,
+            'value' => $this->value,
+            'contact_id' => $this->contact_id,
         ];
     }
 
@@ -41,6 +40,4 @@ class DetailStoreResource extends JsonResource
             ],
         ];
     }
-
-
 }

@@ -45,5 +45,4 @@ class AddressRemoveResource extends JsonResource
             ],
         ];
     }
-
 }

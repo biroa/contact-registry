@@ -20,9 +20,9 @@ class DetailRemoveResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            "id" => $this->id,
-            "key" => $this->key,
-            "value" => $this->value,
+            'id' => $this->id,
+            'key' => $this->key,
+            'value' => $this->value,
         ];
     }
 
@@ -39,5 +39,4 @@ class DetailRemoveResource extends JsonResource
             ],
         ];
     }
-
 }

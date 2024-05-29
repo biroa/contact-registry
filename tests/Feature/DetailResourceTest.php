@@ -7,10 +7,20 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
 
-
 class DetailResourceTest extends TestCase
 {
     use RefreshDatabase;
+
+    /**
+     * Test address index response
+     */
+    public function test_details_index_page(): void
+    {
+        $details = Detail::factory(5)->create();
+        $response = $this->get('/api/details/');
+        $response->assertStatus(200)
+            ->assertJsonCount($details->count(), 'data');
+    }
 
     /**
      * Test address show response
@@ -24,6 +34,9 @@ class DetailResourceTest extends TestCase
                 [
                     'data.key',
                     'data.value',
+                    'data',
+                    'meta',
+                    'meta.message',
                 ]));
     }
 
@@ -54,7 +67,6 @@ class DetailResourceTest extends TestCase
         ]);
     }
 
-
     /**
      * Test Store data and check the response
      */
@@ -64,7 +76,7 @@ class DetailResourceTest extends TestCase
             [
                 'key' => 'email',
                 'value' => 'test.elektro@test.com',
-                'contact_id' => 1
+                'contact_id' => 1,
             ]
         );
 
@@ -97,5 +109,4 @@ class DetailResourceTest extends TestCase
         $response->assertStatus(200);
         $this->assertSoftDeleted(Detail::class);
     }
-
 }

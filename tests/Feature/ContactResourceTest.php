@@ -12,6 +12,17 @@ class ContactResourceTest extends TestCase
     use RefreshDatabase;
 
     /**
+     * Test address index response
+     */
+    public function test_contacts_index_page(): void
+    {
+        $contacts = Contact::factory(5)->create();
+        $response = $this->get('/api/contacts/');
+        $response->assertStatus(200)
+            ->assertJsonCount($contacts->count(), 'data');
+    }
+
+    /**
      * Test Store data and check the response
      */
     public function test_contacts_store_resource(): void
