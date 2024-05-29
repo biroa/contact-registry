@@ -11,7 +11,6 @@ class ContactResourceTest extends TestCase
 {
     use RefreshDatabase;
 
-
     /**
      * Test Store data and check the response
      */
@@ -20,7 +19,7 @@ class ContactResourceTest extends TestCase
         $response = $this->postJson('/api/contacts',
             [
                 'firstName' => 'Adam',
-                'lastName' => 'Biro'
+                'lastName' => 'Biro',
             ]
         );
 
@@ -34,17 +33,17 @@ class ContactResourceTest extends TestCase
                     'data.lastName',
                     'data',
                     'meta',
-                    'meta.message'
+                    'meta.message',
                 ]));
     }
 
     /**
      * Test the show page returns with data
      */
-    public function test_contacts_show_resource():void
+    public function test_contacts_show_resource(): void
     {
         $contact = Contact::factory()->create();
-        $response = $this->get('/api/contacts/'. $contact->id);
+        $response = $this->get('/api/contacts/'.$contact->id);
         $response->assertStatus(200)
             ->assertJson(fn (AssertableJson $json) => $json->hasAll(
                 [
@@ -52,7 +51,7 @@ class ContactResourceTest extends TestCase
                     'data.lastName',
                     'data',
                     'meta',
-                    'meta.message'
+                    'meta.message',
                 ]));
     }
 

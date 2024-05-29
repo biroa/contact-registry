@@ -13,7 +13,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property mixed street
  * @property numeric streetNumber
  */
-class AddressIndexResource extends JsonResource
+class AddressStoreResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -23,12 +23,26 @@ class AddressIndexResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
             'country' => $this->country,
             'county' => $this->county,
             'settlement' => $this->settlement,
             'street' => $this->street,
             'streetNumber' => $this->streetNumber,
+            'contact_id' => $this->contact_id,
+        ];
+    }
+
+    /**
+     * Get additional data that should be returned with the resource array.
+     *
+     * @return array<string, mixed>
+     */
+    public function with(Request $request): array
+    {
+        return [
+            'meta' => [
+                'message' => 'Address stored successfully',
+            ],
         ];
     }
 }

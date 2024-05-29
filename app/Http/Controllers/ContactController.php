@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\ContactRemoveResource;
+use App\Http\Resources\ContactShowResource;
 use App\Http\Resources\ContactsIndexResource;
 use App\Http\Resources\ContactStoreResource;
-use App\Http\Resources\ContactShowResource;
 use App\Http\Resources\ContactUpdateResource;
 use App\Models\Contact;
 use Illuminate\Http\JsonResponse;
@@ -39,6 +39,7 @@ class ContactController extends Controller
         $validator->validate();
         $contact = new Contact($validator->safe()->only(['firstName', 'lastName']));
         $contact->save();
+
         return new ContactStoreResource($contact);
 
     }
@@ -75,10 +76,11 @@ class ContactController extends Controller
     /**
      * SoftDeleting a contact
      */
-    public function destroy(Contact $contact)
+    public function destroy(Contact $contact): ContactRemoveResource|JsonResponse
     {
         $softDeleted = $contact;
         Contact::destroy($contact->id);
+
         return new ContactRemoveResource($softDeleted);
     }
 }

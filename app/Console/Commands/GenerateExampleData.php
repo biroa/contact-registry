@@ -26,9 +26,6 @@ class GenerateExampleData extends Command
      */
     protected $description = "Let's generate example data for x with 2 addresses and y details";
 
-    /**
-     * @return int
-     */
     public function handle(): int
     {
         $createdContacts = 0;
@@ -45,11 +42,6 @@ class GenerateExampleData extends Command
         }
     }
 
-    /**
-     * @param int $createdContacts
-     * @param int $contactsNum
-     * @return int
-     */
     private function insertContacts(int $createdContacts, int $contactsNum): int
     {
         for ($i = 0; $i < $contactsNum; $i++) {
