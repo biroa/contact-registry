@@ -6,14 +6,11 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * @property int $id
- * @property mixed $country
- * @property mixed $county
- * @property mixed $settlement
- * @property mixed street
- * @property numeric streetNumber
+ * @property mixed $id
+ * @property mixed $key
+ * @property mixed $value
  */
-class AddressRemoveResource extends JsonResource
+class DetailRemoveResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -23,12 +20,9 @@ class AddressRemoveResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
-            'country' => $this->country,
-            'county' => $this->county,
-            'settlement' => $this->settlement,
-            'street' => $this->street,
-            'streetNumber' => $this->streetNumber,
+            "id" => $this->id,
+            "key" => $this->key,
+            "value" => $this->value,
         ];
     }
 

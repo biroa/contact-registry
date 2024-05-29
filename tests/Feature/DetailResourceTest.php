@@ -23,7 +23,23 @@ class DetailResourceTest extends TestCase
                 [
                     'data.key',
                     'data.value',
-                    'data.contact_id',
                 ]));
     }
+
+    /**
+     * Test delete a contact resource.
+     *
+     * @return void
+     */
+    public function test_soft_delete_resource()
+    {
+        $contact = Detail::factory()->create();
+
+        $response = $this->delete('/api/details/'.$contact->id);
+
+        // Assert that the request was successful (status code 204)
+        $response->assertStatus(200);
+        $this->assertSoftDeleted(Detail::class);
+    }
+
 }

@@ -106,7 +106,6 @@ class AddressResourceTest extends TestCase
         // Send a PUT request to update the user
         $response = $this->put('/api/addresses/'.$contact->id, $newData);
 
-        // Assert that the request was successful (status code 200)
         $response->assertStatus(200);
 
         // Assert that the user was updated with the new data
