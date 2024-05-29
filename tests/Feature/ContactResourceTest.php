@@ -11,27 +11,41 @@ class ContactResourceTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * The main page is working
-     */
-    public function test_example(): void
-    {
-        $response = $this->get('/');
-
-        $response->assertStatus(200);
-    }
 
     /**
-     * Store data and check the response
+     * Test Store data and check the response
      */
     public function test_contacts_store_resource(): void
     {
-        $response = $this->postJson('/api/contacts', ['firstName' => 'Adam', 'lastName' => 'Biro']);
-//        dd($response->content());
+        $response = $this->postJson('/api/contacts',
+            [
+                'firstName' => 'Adam',
+                'lastName' => 'Biro'
+            ]
+        );
+
         $response->assertStatus(201)
             ->assertJsonPath('meta.message', 'Contacts stored successfully')
             ->assertJsonPath('data.firstName', 'Adam')
             ->assertJsonPath('data.lastName', 'Biro')
+            ->assertJson(fn (AssertableJson $json) => $json->hasAll(
+                [
+                    'data.firstName',
+                    'data.lastName',
+                    'data',
+                    'meta',
+                    'meta.message'
+                ]));
+    }
+
+    /**
+     * Test the show page returns with data
+     */
+    public function test_contacts_show_resource():void
+    {
+        $contact = Contact::factory()->create();
+        $response = $this->get('/api/contacts/'. $contact->id);
+        $response->assertStatus(200)
             ->assertJson(fn (AssertableJson $json) => $json->hasAll(
                 [
                     'data.firstName',
