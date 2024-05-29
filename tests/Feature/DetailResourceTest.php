@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
 
+
 class DetailResourceTest extends TestCase
 {
     use RefreshDatabase;
@@ -23,6 +24,33 @@ class DetailResourceTest extends TestCase
                 [
                     'data.key',
                     'data.value',
+                ]));
+    }
+
+    /**
+     * Test Store data and check the response
+     */
+    public function test_details_store_resource(): void
+    {
+        $response = $this->postJson('/api/details',
+            [
+                'key' => 'email',
+                'value' => 'test.elektro@test.com',
+                'contact_id' => 1
+            ]
+        );
+
+        $response->assertStatus(201)
+            ->assertJsonPath('data.key', 'email')
+            ->assertJsonPath('data.value', 'test.elektro@test.com')
+            ->assertJsonPath('data.contact_id', 1)
+            ->assertJson(fn (AssertableJson $json) => $json->hasAll(
+                [
+                    'data.key',
+                    'data.value',
+                    'data',
+                    'meta',
+                    'meta.message',
                 ]));
     }
 

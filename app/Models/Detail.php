@@ -17,8 +17,8 @@ class Detail extends Model
      * @var array
      */
     protected $fillable = [
-        'email',
-        'phone',
+        'key',
+        'value',
         'contact_id',
     ];
 
