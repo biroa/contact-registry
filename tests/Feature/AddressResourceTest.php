@@ -33,7 +33,7 @@ class AddressResourceTest extends TestCase
     /**
      * Test Store data and check the response
      */
-    public function test_contacts_store_resource(): void
+    public function test_address_store_resource(): void
     {
         $response = $this->postJson('/api/addresses',
             [
@@ -82,5 +82,37 @@ class AddressResourceTest extends TestCase
         // Assert that the request was successful (status code 204)
         $response->assertStatus(200);
         $this->assertSoftDeleted(Address::class);
+    }
+
+    /**
+     * Test updating a contact resource.
+     */
+    public function test_address_update_resource(): void
+    {
+        $contact = Address::factory()->create();
+
+        // Generate new data for updating the user
+        $newData = [
+            'county' => 'Test County',
+            'country' => 'Test Country',
+            'settlement' => 'Test Settlement',
+            'street' => 'Teszt street',
+            'streetNumber' => 20,
+        ];
+
+        // Send a PUT request to update the user
+        $response = $this->put('/api/addresses/'.$contact->id, $newData);
+
+        // Assert that the request was successful (status code 200)
+        $response->assertStatus(200);
+
+        // Assert that the user was updated with the new data
+        $this->assertDatabaseHas('addresses', [
+            'county' => $newData['county'],
+            'country' => $newData['country'],
+            'settlement' => $newData['settlement'],
+            'street' => $newData['street'],
+            'streetNumber' => $newData['streetNumber'],
+        ]);
     }
 }

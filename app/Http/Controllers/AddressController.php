@@ -70,7 +70,7 @@ class AddressController extends Controller
      */
     public function update(Request $request, string $id): AddressUpdateResource|JsonResponse
     {
-        $contact = Address::findOrFail((int) $id);
+        $address = Address::findOrFail((int) $id);
         $validator = Validator::make($request->all(),
             [
                 'country' => 'required|max:75',
@@ -84,7 +84,7 @@ class AddressController extends Controller
             return response()->json(['errors' => $validator->errors()], 400);
         }
         $validator->validate();
-        $contact->fill($validator->safe()->only(
+        $address->fill($validator->safe()->only(
             [
                 'country',
                 'county',
@@ -93,6 +93,8 @@ class AddressController extends Controller
                 'streetNumber',
             ]
         ))->save();
+
+        return new AddressUpdateResource($address);
     }
 
     /**
