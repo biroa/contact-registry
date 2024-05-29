@@ -28,6 +28,34 @@ class DetailResourceTest extends TestCase
     }
 
     /**
+     * Test updating a contact resource.
+     */
+    public function test_details_update_resource(): void
+    {
+        $contact = Detail::factory()->create();
+
+        // Generate new data for updating the user
+        $newData = [
+            'key' => 'skype',
+            'value' => 'test.skype.account',
+        ];
+
+        // Send a PUT request to update the user
+        $response = $this->put('/api/details/'.$contact->id, $newData);
+
+        // Assert that the request was successful (status code 200)
+        $response->assertStatus(200);
+
+        // Assert that the user was updated with the new data
+        $this->assertDatabaseHas('details', [
+            'id' => $contact->id,
+            'key' => $newData['key'],
+            'value' => $newData['value'],
+        ]);
+    }
+
+
+    /**
      * Test Store data and check the response
      */
     public function test_details_store_resource(): void

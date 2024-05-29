@@ -66,7 +66,20 @@ class DetailController extends Controller
      */
     public function update(Request $request, string $id): DetailUpdateResource | JsonResponse
     {
-        //
+        $contact = Detail::findOrFail((int) $id);
+        $validator = Validator::make($request->all(),
+            [
+                'key' => 'required|max:100',
+                'value' => 'required|max:255',
+            ]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 400);
+        }
+        $validator->validate();
+
+        $contact->fill($validator->safe()->only(['key', 'value']))->save();
+
+        return new DetailUpdateResource($contact);
     }
 
     /**
