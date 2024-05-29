@@ -12,6 +12,9 @@ class AddressResourceTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * Test address show response
+     */
     public function test_addresses_show_resource(): void
     {
         $address = Address::factory()->create();
